@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#000">
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_long">
+
+        <ImageView
+            android:id="@+id/tick_1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="35dp"
+
+            app:srcCompat="@drawable/tick" />
+
+        <TextView
+
+            android:id="@+id/tv_car"
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:layout_height="30dp"
+            android:layout_marginEnd="24dp"
+            android:text="Car Health Update"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:fontFamily="@font/font1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_long"
+            app:layout_constraintBottom_toTopOf="@+id/tv_rescue"
+            tools:layout_editor_absoluteY="341dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/linear1">
+    <ImageView
+        android:id="@+id/tick_3"
+
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="35dp"
+
+        app:srcCompat="@drawable/tick" />
+
+    <TextView
+        android:id="@+id/tv_policy"
+        android:layout_width="0dp"
+        android:layout_weight="9"
+        android:layout_height="30dp"
+        android:layout_marginEnd="24dp"
+        android:text="Request a rescue Online"
+        android:textColor="@color/white"
+        android:fontFamily="@font/font1"
+        android:textSize="22sp"
+    />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="312dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/green_flag" />
+    <TextView
+        android:id="@+id/tv_long"
+        android:layout_width="322dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="116dp"
+        android:text="Green Flag customer can create no Matter What "
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:fontFamily="@font/font2"
+        app:layout_constraintBottom_toTopOf="@id/linear1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/linear2">
+
+
+    <ImageView
+        android:id="@+id/tick_2"
+        android:src="@drawable/tick"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="35dp" />
+
+    <TextView
+
+        android:id="@+id/tv_rescue"
+        android:layout_width="0dp"
+        android:layout_weight="9"
+        android:layout_height="30dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/font1"
+        android:text="Policy Information"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_policy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tick_2"
+        app:layout_constraintTop_toBottomOf="@id/tv_car" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_account"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Create an account"
+        android:textColor="#434141"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:fontFamily="@font/font2"
+        android:textAlignment="center"
+        android:background="@drawable/btn_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

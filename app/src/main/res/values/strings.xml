@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PoonamTiwariGreenFlag</string>
+    <string name="discription">Your password should have minimum 8 character and contain atleast one number. One uppercase and one lowercase. You can use special charecter.</string>
+</resources>
