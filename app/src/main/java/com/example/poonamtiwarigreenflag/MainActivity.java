@@ -11,13 +11,14 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Button btnCreateAccount;
-
+SqlDataBaseHelper sqlDataBaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         btnCreateAccount = findViewById(R.id.btn_account);
+
         btnCreateAccount.setOnClickListener(view -> {
 
             startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));

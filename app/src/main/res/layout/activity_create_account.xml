@@ -138,19 +138,18 @@
 
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/button"
-
 
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="10dp"
-        android:text="Next"
-        android:background="@drawable/btn_background"
+        android:text="@string/next"
+        android:background="@drawable/btn_backgreen"
         android:enabled="false"
-        android:textColor="#434141"
+
         android:textAllCaps="false"
         android:textSize="25sp"
         android:fontFamily="@font/font2"

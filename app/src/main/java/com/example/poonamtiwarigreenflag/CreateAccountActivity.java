@@ -2,6 +2,7 @@ package com.example.poonamtiwarigreenflag;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +23,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     boolean emailvalid, passwordvalid, repasswordvalid;
     // TextInputEditText edMail;
     ImageView backBtn;
-
+    ContentValues contentValues;
+SqlDataBaseHelper sqlDataBaseHelper;
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
                     "(?=.*[0-9])" +         //at least 1 digit
@@ -35,6 +37,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     "$");
     Button btn_confirm;
     TextView emailHighligther, tvPassHighligther;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +53,37 @@ public class CreateAccountActivity extends AppCompatActivity {
         btn_confirm = findViewById(R.id.button);
         emailHighligther = findViewById(R.id.tv_emailHighLigther);
         tvPassHighligther = findViewById(R.id.tv_passHighLigther);
-
-
+user=new User();
+        sqlDataBaseHelper=new SqlDataBaseHelper(CreateAccountActivity.this);
         btn_confirm.setOnClickListener(view -> {
+            String email =  til_email.getEditText().getText().toString().trim();
+            String password = til_password.getEditText().getText().toString().trim();
+           // String repassword=til_rePassword.getEditText().getText().toString().trim();
+//            if (!validationEmail() | !validatePassword() | !validateRePassword()) {
+//                return;
+//            }
 
 
-            if (!validationEmail() | !validatePassword() | !validateRePassword()) {
-                return;
+           if (validationEmail() && validateRePassword() && validateRePassword()) {
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("email", email);
+                contentValues.put("password", password);
+
+
+                sqlDataBaseHelper.insertUserDetail(contentValues);
+              //  sqlDataBaseHelper.addNewUser(email,password);
+
+
+                til_email.getEditText().getText().clear();
+                til_password.getEditText().getText().clear();
+                til_rePassword.getEditText().getText().clear();
+                til_email.setEndIconVisible(false);
+                til_password.setPasswordVisibilityToggleEnabled(false);
+                til_rePassword.setPasswordVisibilityToggleEnabled(false);
+                tvPassHighligther.setVisibility(View.GONE);
+                btn_confirm.setEnabled(false);
             }
-
-            Toast.makeText(this, "successfully registered", Toast.LENGTH_SHORT).show();
-            til_email.getEditText().getText().clear();
-            til_password.getEditText().getText().clear();
-            til_rePassword.getEditText().getText().clear();
-            til_email.setEndIconVisible(false);
-            til_password.setPasswordVisibilityToggleEnabled(false);
-            til_rePassword.setPasswordVisibilityToggleEnabled(false);
-            tvPassHighligther.setVisibility(View.GONE);
-            btn_confirm.setEnabled(false);
         });
         til_email.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,14 +98,18 @@ public class CreateAccountActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+               // ContentValues cv=new ContentValues();
                 if (validationEmail()) {
                     //layout1_email.setPasswordVisibilityToggleEnabled(true);
                     til_email.setPasswordVisibilityToggleDrawable(R.drawable.tick);
                     til_email.setEndIconVisible(true);
                     emailvalid = true;
-                   // til_email.setEndIconDrawable(R.drawable.tick);
-                    if (til_email.getEditText().getText().toString().equalsIgnoreCase("abcdef@gmail.com")) {
+                    user=sqlDataBaseHelper.checkUser();
+
+                    if (til_email.getEditText().getText().toString().equalsIgnoreCase(user.getEmail())) {
+
                         emailHighligther.setVisibility(View.VISIBLE);
+                        emailHighligther.setText("this User already Exists!");
                     }
 
                     validAll();

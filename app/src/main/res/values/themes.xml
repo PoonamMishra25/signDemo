@@ -18,9 +18,12 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">?android:attr/listDivider</item>
     </style>
-    <style name="AccentButton" parent="ThemeOverlay.AppCompat.Dark">
-        <!-- customize colorButtonNormal for the disable color -->
-        <item name="android:enabled" parent ="R.drawable.btn_background"/>
-        <!-- customize colorAccent for the enabled color -->
+
+    <style name="Widget.Shrine.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:drawableEnd">@drawable/btn_background</item>
+
     </style>
+
+
 </resources>

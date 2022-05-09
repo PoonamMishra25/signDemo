@@ -6,6 +6,8 @@
         <entry key="app/src/main/res/drawable/background.xml" value="0.115" />
         <entry key="app/src/main/res/drawable/backgroundGreen.xml" value="0.115" />
         <entry key="app/src/main/res/drawable/backgroundgreen.xml" value="0.115" />
+        <entry key="app/src/main/res/drawable/btn_backgreen.xml" value="0.176" />
+        <entry key="app/src/main/res/drawable/disable_button.xml" value="0.176" />
         <entry key="app/src/main/res/drawable/enabled_disabled_state.xml" value="0.151" />
         <entry key="app/src/main/res/drawable/tv_back.xml" value="0.155" />
         <entry key="app/src/main/res/layout-v24/activity_create_account.xml" value="0.25416666666666665" />
