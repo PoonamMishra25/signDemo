@@ -7,94 +7,83 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import androidx.viewpager.widget.PagerAdapter;
+import java.util.ArrayList;
 
 
 public class SqlDataBaseHelper extends SQLiteOpenHelper {
 
 
-    static String name =  "database";
+    static String name = "database";
     static int version = 1;
-    public static String GREEN_FLAG_PROJECT = "GREEN_FLAG_PROJECT";
-    public static final String EMAIL="email";
-    public static final String PASSWORD="password";
+    public static String GREEN_FLAG_PROJECT_TABLE = "GREEN_FLAG_PROJECT";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
     private final Context context;
 
 
-    String user_table = "CREATE TABLE if not exists GREEN_FLAG_PROJECT ('id' INTEGER PRIMARY KEY AUTOINCREMENT ," +
-           EMAIL+" TEXT , " +
-            PASSWORD+ " TEXT )";
-
-
     public SqlDataBaseHelper(Context context) {
-        super(context, name, null , version);
-        this.context=context;
+        super(context, name, null, version);
+        this.context = context;
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(user_table);
+        String query = "CREATE TABLE if not exists GREEN_FLAG_PROJECT ('id' INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                EMAIL + " TEXT , " +
+                PASSWORD + " TEXT )";
+        db.execSQL(query);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + GREEN_FLAG_PROJECT);
+        db.execSQL("DROP TABLE IF EXISTS " + GREEN_FLAG_PROJECT_TABLE);
         onCreate(db);
     }
 
 
-    public void insertUserDetail(ContentValues contentValues){
+    public void insertUserDetail(ContentValues contentValues) {
 
         try (Cursor cursor = getReadableDatabase().
                 rawQuery("SELECT * FROM GREEN_FLAG_PROJECT WHERE email = ?", new String[]{contentValues.get("email").toString()})) {
             if (cursor.moveToFirst()) {
-                Toast.makeText(context, "Username already exist", Toast.LENGTH_SHORT).show();
+
                 return;
             }
         }
-        getWritableDatabase().insert(GREEN_FLAG_PROJECT, "", contentValues);
-        Toast.makeText(context, "Registered as user", Toast.LENGTH_SHORT).show();
+
+        getWritableDatabase().insert(GREEN_FLAG_PROJECT_TABLE, "", contentValues);
+        Toast.makeText(context, "Welcome! Registered successfully", Toast.LENGTH_SHORT).show();
 
     }
-    public void addNewUser(String email, String password) {
 
-        // on below line we are creating a variable for
-        // our sqlite database and calling writable method
-        // as we are writing data in our database.
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put( EMAIL,email);
-        cv.put( PASSWORD,password);
-        db.insert(GREEN_FLAG_PROJECT, null, cv);
-        Toast.makeText(context, "Registered as user", Toast.LENGTH_SHORT).show();
-    }
-    public User checkUser(){
-        //ContentValues contentValues=new ContentValues();
-        User user=new User();
-        int count=0;
-        SQLiteDatabase db = this.getReadableDatabase();
-       // Cursor cursor = db.rawQuery ( "SELECT * FROM GREEN_FLAG_PROJECT WHERE email = ?", new String[]{EMAIL});
-        Cursor cursor = db.rawQuery("SELECT * FROM " + GREEN_FLAG_PROJECT, null);
-        if (cursor.moveToFirst()) {
-            do {
-                // on below line we are adding the data from cursor to our array list.
-                user=new User(cursor.getString(1));
 
-            } while (cursor.moveToNext());
 
-//        try (Cursor cursor = getReadableDatabase().
-//                rawQuery("SELECT * FROM GREEN_FLAG_PROJECT WHERE email = ?", new String[]{EMAIL})) {
-//            if (cursor.moveToFirst()) {
-//                Toast.makeText(context, "Username already exist", Toast.LENGTH_SHORT).show();
-//                count++;
-//            }
-//            if(count>0) {
-//                return EMAIL;
-//            }else{
-//                return "Does not exist";
-//            }
+
+    public ArrayList<String> checkIfRecordExist(String email) {
+        ArrayList<String> emails=new ArrayList<>();
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = " select * from " + GREEN_FLAG_PROJECT_TABLE + " where " + EMAIL + "=?";
+            String[] select = new String[]{email};
+            Cursor cursor = db.rawQuery(query, select);
+
+
+            if (cursor.moveToFirst()) {
+                do{
+                emails.add( cursor.getString(1));
+
+            }while (cursor.moveToNext());
+            cursor.close();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return user;
+        return emails;
     }
+
+
 }

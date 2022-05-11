@@ -67,7 +67,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:hint="email"
-        app:passwordToggleEnabled="true"
+        app:passwordToggleEnabled="false"
         android:textColorHint="#817B7B"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,6 @@
 
     <TextView
         android:id="@+id/tv_pass"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -111,10 +110,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:hint="Create Password"
-
         android:textColorHint="#817B7B"
-        app:passwordToggleEnabled="true"
-
+        app:passwordToggleEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_pass"
@@ -138,7 +135,7 @@
 
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
 
         android:layout_width="match_parent"
@@ -147,7 +144,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginBottom="10dp"
         android:text="@string/next"
-        android:background="@drawable/btn_backgreen"
+        android:background="@drawable/enabled_disabled_state"
         android:enabled="false"
 
         android:textAllCaps="false"

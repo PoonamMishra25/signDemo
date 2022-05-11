@@ -16,15 +16,15 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class CreateAccountActivity extends AppCompatActivity {
     TextInputLayout til_email, til_password, til_rePassword;
     boolean emailvalid, passwordvalid, repasswordvalid;
-    // TextInputEditText edMail;
+
     ImageView backBtn;
-    ContentValues contentValues;
-SqlDataBaseHelper sqlDataBaseHelper;
+    SqlDataBaseHelper sqlDataBaseHelper;
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
                     "(?=.*[0-9])" +         //at least 1 digit
@@ -33,11 +33,11 @@ SqlDataBaseHelper sqlDataBaseHelper;
                     "(?=.*[a-zA-Z])" +      //any letter
                     "(?=.*[@#$%^&+=])" +    //at least 1 special character
                     "(?=\\S+$)" +           //no white spaces
-                    ".{4,}" +               //at least 4 characters
+                    ".{8,}" +               //at least 4 characters
                     "$");
     Button btn_confirm;
     TextView emailHighligther, tvPassHighligther;
-    User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +53,12 @@ SqlDataBaseHelper sqlDataBaseHelper;
         btn_confirm = findViewById(R.id.button);
         emailHighligther = findViewById(R.id.tv_emailHighLigther);
         tvPassHighligther = findViewById(R.id.tv_passHighLigther);
-user=new User();
+        //user=new User();
         sqlDataBaseHelper=new SqlDataBaseHelper(CreateAccountActivity.this);
+
         btn_confirm.setOnClickListener(view -> {
             String email =  til_email.getEditText().getText().toString().trim();
             String password = til_password.getEditText().getText().toString().trim();
-           // String repassword=til_rePassword.getEditText().getText().toString().trim();
-//            if (!validationEmail() | !validatePassword() | !validateRePassword()) {
-//                return;
-//            }
 
 
            if (validationEmail() && validateRePassword() && validateRePassword()) {
@@ -72,7 +69,7 @@ user=new User();
 
 
                 sqlDataBaseHelper.insertUserDetail(contentValues);
-              //  sqlDataBaseHelper.addNewUser(email,password);
+
 
 
                 til_email.getEditText().getText().clear();
@@ -83,6 +80,7 @@ user=new User();
                 til_rePassword.setPasswordVisibilityToggleEnabled(false);
                 tvPassHighligther.setVisibility(View.GONE);
                 btn_confirm.setEnabled(false);
+                emailHighligther.setVisibility(View.GONE);
             }
         });
         til_email.getEditText().addTextChangedListener(new TextWatcher() {
@@ -93,20 +91,25 @@ user=new User();
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                emailHighligther.setVisibility(View.INVISIBLE);
+btn_confirm.setEnabled(false);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-               // ContentValues cv=new ContentValues();
+
                 if (validationEmail()) {
-                    //layout1_email.setPasswordVisibilityToggleEnabled(true);
+
                     til_email.setPasswordVisibilityToggleDrawable(R.drawable.tick);
                     til_email.setEndIconVisible(true);
                     emailvalid = true;
-                    user=sqlDataBaseHelper.checkUser();
 
-                    if (til_email.getEditText().getText().toString().equalsIgnoreCase(user.getEmail())) {
+
+                  String user_email= til_email.getEditText().getText().toString();
+                    ArrayList<String> emails_database;
+                    emails_database= sqlDataBaseHelper.checkIfRecordExist(user_email);
+
+                    if (emails_database.contains(user_email)){
 
                         emailHighligther.setVisibility(View.VISIBLE);
                         emailHighligther.setText("this User already Exists!");
@@ -151,6 +154,10 @@ user=new User();
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                til_rePassword.setPasswordVisibilityToggleEnabled(false);
+                passwordvalid=false;
+                btn_confirm.setEnabled(false);
+
             }
 
             @Override
@@ -172,6 +179,11 @@ user=new User();
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(til_password !=til_rePassword) {
+                    repasswordvalid=false;
+                    btn_confirm.setEnabled(false);
+                    til_rePassword.setPasswordVisibilityToggleEnabled(false);
+                }
 
             }
 
@@ -196,19 +208,21 @@ user=new User();
         String emailInput = til_email.getEditText().getText().toString().trim();
         if (emailInput.isEmpty()) {
             til_email.setErrorEnabled(false);
-            // layout1_email.setEndIconVisible(false);
+            emailHighligther.setVisibility(View.INVISIBLE);
+
             til_email.setBackgroundResource(R.drawable.background);
             emailvalid = false;
 
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            emailHighligther.setVisibility(View.INVISIBLE);
             til_email.setBackgroundResource(R.drawable.background);
             til_email.setError("Invalid eMail!");
             emailvalid = false;
 
             return false;
         } else {
-
+            emailHighligther.setVisibility(View.INVISIBLE);
             emailvalid = true;
             til_email.setBackgroundResource(R.drawable.backgroundgreen);
 
@@ -224,10 +238,13 @@ user=new User();
         String passwordInput = til_password.getEditText().getText().toString().trim();
         if (passwordInput.isEmpty()) {
             tvPassHighligther.setVisibility(View.VISIBLE);
+            til_password.setPasswordVisibilityToggleEnabled(false);
+
             tvPassHighligther.setText("Empty Password! ");
             passwordvalid=false;
             return false;
         } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+            til_password.setPasswordVisibilityToggleEnabled(false);
             tvPassHighligther.setVisibility(View.VISIBLE);
             tvPassHighligther.setText("Weak Passwords! All conditions not satisfied!");
 
@@ -249,7 +266,23 @@ user=new User();
     private boolean validateRePassword() {
         String re_passwordInput = til_rePassword.getEditText().getText().toString().trim();
         String passwordInput = til_password.getEditText().getText().toString().trim();
-        if (passwordInput.equalsIgnoreCase(re_passwordInput) && !passwordInput.isEmpty()) {
+
+        if( passwordInput.isEmpty()){
+            repasswordvalid=false;
+            tvPassHighligther.setVisibility(View.VISIBLE);
+            til_rePassword.setPasswordVisibilityToggleEnabled(false);
+            tvPassHighligther.setText("Password Filed can not be empty!");
+
+            return false;
+        }
+        if (!passwordInput.equalsIgnoreCase(re_passwordInput) ) {
+            repasswordvalid=false;
+            tvPassHighligther.setVisibility(View.VISIBLE);
+            til_rePassword.setPasswordVisibilityToggleEnabled(false);
+            tvPassHighligther.setText("Password did not match!");
+
+            return false;
+        } else {
             tvPassHighligther.setVisibility(View.GONE);
 
 
@@ -261,13 +294,6 @@ user=new User();
             repasswordvalid = true;
             return true;
 
-        } else {
-            repasswordvalid=false;
-            tvPassHighligther.setVisibility(View.VISIBLE);
-            tvPassHighligther.setText("Password did not match!");
-            // layout3_repeatPass.setBackgroundResource(R.drawable.background);
-
-            return false;
         }
 
     }
@@ -275,12 +301,7 @@ user=new User();
     private void validAll() {
 
 
-        if (passwordvalid && repasswordvalid && emailvalid) {
-            btn_confirm.setEnabled(true);
-        } else {
-            btn_confirm.setEnabled(false);
-
-        }
+        btn_confirm.setEnabled(passwordvalid && repasswordvalid && emailvalid);
 
     }
 }
